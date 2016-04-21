@@ -219,9 +219,10 @@ var app = {
 
         }, 'OK,Cancel', 'Title')
     }
-    , getCurrPosition: function () {
+    , getCurrPosition: function () { //GET GPS
 
         navigator.geolocation.getCurrentPosition(function (position) {
+            //alert('success!');
                 var location = [position.coords.latitude, position.coords.longitude];
 
                 latPos = parseFloat(position.coords.latitude).toFixed(7);
@@ -238,12 +239,37 @@ var app = {
             }
             , function (error) {
                 // error getting GPS coordinates
-                //alert('code: ' + error.code + ' with message: ' + error.message + '\n');
+                alert('code: ' + error.code + ' with message: ' + error.message + '\n');
             }, {
                 enableHighAccuracy: true
                 , maximumAge: 3000
-                , timeout: 5000
+                , timeout: 100000
             });
+        
+//        var onSuccess = function () {
+//                        alert('success!');
+//                var location = [position.coords.latitude, position.coords.longitude];
+//
+//                latPos = parseFloat(position.coords.latitude).toFixed(7);
+//                lngPos = parseFloat(position.coords.longitude).toFixed(7);
+//
+//                track[activePathName].coords.push({
+//                    lat: latPos*1
+//                    , lng: lngPos*1
+//                });
+//
+//
+//                document.querySelector('h1').innerHTML = track[activePathName].coords.length + ' Wegpunkte gesetzt';
+//                console.log(track);
+//        }
+//        
+//        var onError = function () {
+//            alert('code: ' + error.code + ' with message: ' + error.message + '\n');
+//        }
+//        
+//        
+//        var options = {maximumAge: 0, timeout: 10000, enableHighAccuracy:true};
+//        navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
 
     },
 

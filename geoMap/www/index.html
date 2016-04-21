@@ -10,9 +10,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <title>G(e)oMap</title>
+
 </head>
 
 <body>
+       <script src="js/jquery-1.4.4.js"></script>
+    <script type="text/javascript" src="js/cordova.js"></script>
     <div class="app">
         <h1>G(e)oMap</h1>
         <div class="trackOptsFinished hidden">
@@ -31,7 +34,7 @@
         </div>
     </div>
     
-    <img class="toggle" id="toggle" src="http://labs.qnimate.com/slide-out-sidebar/icon-mobile.png" onclick="toggle_sidebar()" style="position: fixed; z-index:10; right: 10px; top: 10px" />
+    <img class="toggle" id="toggle" src="img/icon-mobile.png" onclick="toggle_sidebar()" style="position: fixed; z-index:10; right: 10px; top: 10px" />
         <div id="sidebar" style="position: fixed; display: inline-block; top: 0px; height: 100%; width: 100%; left: -100%; background-color: #222; transition: all 0.5s ease-in-out;"><div class="innerSidebar">
             <input type="text" maxlength="30" placeholder="User-ID" size="30"><br/>
             Set Trackingpoint every <input type="number" maxlength="2" size="2"> Minutes. <br/>
@@ -39,8 +42,7 @@
         </div>
     
     
-    <script src="js/jquery-1.4.4.js"></script>
-    <script type="text/javascript" src="cordova.js"></script>
+
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
