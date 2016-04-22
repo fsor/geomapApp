@@ -4,6 +4,8 @@ Running in Background
 small alert message
 */
 
+    
+       
 var track = {
         //'Path1': {'coords':[],pathColor:''}
 }, trackInterval, activePathName, trackIntVal, gMSetObj;
@@ -14,9 +16,15 @@ var app = {
         this.bindEvents();
     }
     , bindEvents: function () {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
+        console.log('test');
+        //document.addEventListener('deviceready', this.onDeviceReady, false);
+         document.addEventListener("deviceready", function(){
+          alert("123");
+     },true);
+    
     }
     , onDeviceReady: function () {
+        console.log('deviceready');
         app.receivedEvent('deviceready');
         app.getLocalStorage();
     }
@@ -32,6 +40,7 @@ var app = {
 
     
     , startTracking: function () {
+        console.log('test');
         alert('start');
         if (localStorage.getItem('geoMapSettings')) {
             var gMSetStorage = localStorage.getItem('geoMapSettings'); // fill input from local storage
@@ -309,3 +318,4 @@ function toggle_sidebar() {
 }
 
 console.log('finished loading');
+
