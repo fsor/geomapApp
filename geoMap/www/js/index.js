@@ -13,18 +13,18 @@ var track = {
 
 var app = {
     initialize: function () {
-        this.bindEvents();
+        //this.bindEvents();
+        setTimeout(function(){
+            app.onDeviceReady();
+            
+        }, 1000);
     }
     , bindEvents: function () {
-        console.log('test');
         //document.addEventListener('deviceready', this.onDeviceReady, false);
-         document.addEventListener("deviceready", function(){
-          alert("123");
-     },true);
     
     }
     , onDeviceReady: function () {
-        console.log('deviceready');
+        
         app.receivedEvent('deviceready');
         app.getLocalStorage();
     }
@@ -40,8 +40,6 @@ var app = {
 
     
     , startTracking: function () {
-        console.log('test');
-        alert('start');
         if (localStorage.getItem('geoMapSettings')) {
             var gMSetStorage = localStorage.getItem('geoMapSettings'); // fill input from local storage
             gMSetObj = jQuery.parseJSON(gMSetStorage);
@@ -284,8 +282,12 @@ var app = {
     },
 
     receivedEvent: function (id) {
+         //alert('receivedEvent');
+        if(document.querySelectorAll('#startTracking').length){
         document.querySelector('#startTracking').removeEventListener('click', app.startTracking);
-        document.querySelector('#startTracking').addEventListener('click', app.startTracking);
+        document.querySelector('#startTracking').addEventListener('click', app.startTracking);   
+        }
+
     }
 };
 
@@ -317,5 +319,5 @@ function toggle_sidebar() {
     }
 }
 
-console.log('finished loading');
+
 
