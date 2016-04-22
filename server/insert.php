@@ -10,13 +10,14 @@ if($link === false){
 if(isset($_POST['path'])) {
     $path = $_POST['path'];
     $pathId = $_POST['pathID'];
+    $pathColor = $_POST['pathColor'];
     $userId = $_POST['userID'];
   } else {
 
-
   }
 
-$sql = "INSERT INTO geomap (userID, pathID, path) VALUES ('$userId', '$pathId', '$path')";
+
+$sql = "REPLACE INTO geomap (userID, pathID, path, pathColor) VALUES ('$userId', '$pathId', '$path', '$pathColor')";
 
 if(mysqli_query($link, $sql)){
     echo "Records added successfully.";
