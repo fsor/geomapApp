@@ -140,9 +140,10 @@ var app = {
     //dataType: 'json',
     data: {'path': pathString,
           'pathID':activePathName,
+           'pathColor': '#FF0000',
           'userID':userId},
     success: function(data) {
-      alert("Data Save: " + data);
+      alert("Data Saved: " + data);
     }
   });
 
