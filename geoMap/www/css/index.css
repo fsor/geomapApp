@@ -24,18 +24,8 @@ body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#E4E4E4;
-    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #E4E4E4)
-    );
-    background-attachment:fixed;
+    background-image: url("../img/mapBg.JPG");
+    background-color: #cccccc;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
     font-size:12px;
     height:100%;
@@ -53,7 +43,7 @@ body {
     height:50px;                   /* text area height */
     width:225px;                   /* text area width */
     text-align:center;
-    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
+    padding:250px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
     margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
                                    /* offset horizontal: half of text area width */
 }
@@ -61,10 +51,13 @@ body {
 
 
 
-.trackOptsStart input[type=text]{
-    width:100%;
-    margin-bottom:10px;
-    margin-top:20px;
+.trackOptsStart input[type="text"] {
+    width: 80%;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: center;
 }
 
 .trackOptsStart button, .trackOptsRunning button, .trackOptsFinished button{
@@ -77,6 +70,43 @@ body {
     color: white;
     cursor:pointer;
 }
+
+
+#startTracking{
+    border: 2px solid #546F25;
+    background-color: #546F25;
+}
+
+#stopTracking{
+    border: 2px solid #7b3b01;
+    background-color: #7b3b01;   
+}
+
+#resumeTracking{
+    border: 2px solid #546F25;
+    background-color: #546F25;  
+}
+
+#pauseTracking{
+    border: 2px solid #DF7514;
+    background-color: #DF7514;  
+}
+
+#uploadTrack{
+    border: 2px solid #DF7514;
+    background-color: #DF7514; 
+}
+
+#deleteTrack{
+    border: 2px solid #7b3b01;
+    background-color: #7b3b01;  
+}
+
+/*
+CA3C3C
+DF7514
+42B8DD
+*/
 
 .hidden{
     display:none;
@@ -120,14 +150,24 @@ body {
 }
 
 h1 {
-    font-size:24px;
+    font-size:40px;
     font-weight:normal;
     margin:0px;
-    margin-top:50%;
     margin-bottom:10px;
     overflow:visible;
     padding:0px;
     text-align:center;
+    color:#546F25;
+}
+
+h2{
+    color:#7b3b01;
+    font-size: 20px;
+}
+
+
+h1:empty, h2:empty {
+    display: none;
 }
 
 .event {

@@ -8,20 +8,40 @@ small alert message
        
 var track = {
         //'Path1': {'coords':[],pathColor:''}
-}, trackInterval, activePathName, trackIntVal, gMSetObj;
+}, trackInterval, activePathName, trackIntVal, gMSetObj, gpsBusy, appRunning;
 
 
 var app = {
     initialize: function () {
+      
         //this.bindEvents();
         setTimeout(function(){
             app.onDeviceReady();
+            gpsBusy = false;
             
         }, 1000);
     }
     , bindEvents: function () {
         //document.addEventListener('deviceready', this.onDeviceReady, false);
     
+    }
+    , setLocationTimer: function () {
+        //console.log('busy? - '+gpsBusy);
+                if (!gpsBusy){
+                   app.getCurrPosition();
+                }
+        
+        var locationInterval = localStorage.getItem('geoMapSettings');
+        var locationnew = JSON.parse(locationInterval);
+        //console.log(locationnew.trackInterval);
+        clearInterval(trackInterval);
+          var trackingTimer = ((locationnew.trackInterval*1) * 60000);
+       
+            trackInterval = setInterval(function(){
+                if (!gpsBusy){
+                   app.getCurrPosition();
+                }
+            },trackingTimer);
     }
     , onDeviceReady: function () {
         
@@ -50,15 +70,18 @@ var app = {
 
 
         if (document.querySelector('.trackOptsStart input[type="text"]').value && gMSetObj.trackInterval && gMSetObj.userId) {
-            document.querySelector('h1').innerHTML = 'Searching for GPS...';
+            document.querySelector('h1').innerHTML = '';
+            document.querySelector('h2').innerHTML = 'Searching for GPS...';
             document.querySelector('.trackOptsRunning').classList.remove('hidden');
             document.querySelector('.trackOptsStart').className += ' hidden';
+            document.querySelector('.trackOptsFinished').className += ' hidden';
             document.querySelector('#pauseTracking').classList.remove('hidden');
             document.querySelector('#resumeTracking').className += ' hidden';
+            
 
 
-            app.getCurrPosition();
-            clearInterval(trackInterval);
+            appRunning = true;
+            app.setLocationTimer();
             activePathName = document.querySelector('.trackOptsStart input[type="text"]').value;
 
             track[activePathName] = {
@@ -66,11 +89,7 @@ var app = {
                 , pathColor: ''
             }
 
-            //var trackingTimer = (gMSetObj.trackInterval * 60000);
-            //console.log(gMSetObj.trackInterval);
-            var trackingTimer = (gMSetObj.trackInterval * 1000);
-            //console.log(trackingTimer);
-            trackInterval = setInterval(app.getCurrPosition, trackingTimer);
+
 
             document.querySelector('#stopTracking').removeEventListener('click', app.stopTracking);
             document.querySelector('#stopTracking').addEventListener('click', app.stopTracking);
@@ -79,7 +98,8 @@ var app = {
             document.querySelector('#pauseTracking').addEventListener('click', app.pauseTracking);
 
         } else {
-            document.querySelector('h1').innerHTML = 'Please enter all options!';
+            document.querySelector('h1').innerHTML = '';
+            document.querySelector('h2').innerHTML = 'Please enter all options!';
         }
 
     }
@@ -88,14 +108,12 @@ var app = {
         app.trackPaused();
     }
     , resumeTracking: function () {
-        clearInterval(trackInterval);
         document.querySelector('#pauseTracking').classList.remove('hidden');
         document.querySelector('#resumeTracking').className += ' hidden';
-        //var trackingTimer = (gMSetObj.trackInterval * 60000;
-        var trackingTimer = (gMSetObj.trackInterval * 1000);
-        trackInterval = setInterval(app.getCurrPosition, trackingTimer);
+        app.setLocationTimer();
     }
     , stopTracking: function () {
+        appRunning = false;
         clearInterval(trackInterval);
         document.querySelector('.trackOptsFinished').classList.remove('hidden');
         document.querySelector('.trackOptsRunning').className += ' hidden';
@@ -105,11 +123,13 @@ var app = {
         //console.log('track deleted');
         track[activePathName].coords.length = 0;
         document.querySelector('h1').innerHTML = 'G(e)oMap';
+        document.querySelector('h2').innerHTML = '';
         document.querySelector('.trackOptsStart').classList.remove('hidden');
         document.querySelector('.trackOptsFinished').className += ' hidden';
         app.receivedEvent('deviceready');
     }
     , trackPaused: function () {
+        clearInterval(trackInterval);
         document.querySelector('#pauseTracking').className += ' hidden';
         document.querySelector('#resumeTracking').classList.remove('hidden');
 
@@ -117,12 +137,14 @@ var app = {
         document.querySelector('#resumeTracking').addEventListener('click', app.resumeTracking);
     }, 
     trackStoped: function () {
-        document.querySelector('#uploadTrack').removeEventListener('click', false);
+        document.querySelector('#uploadTrack').removeEventListener('click', app.uploadTrack);
         document.querySelector('#uploadTrack').addEventListener('click', app.uploadTrack);
         document.querySelector('#deleteTrack').removeEventListener('click', app.alertBox);
         document.querySelector('#deleteTrack').addEventListener('click', app.alertBox);
     }
     , uploadTrack: function () {
+        document.querySelector('h1').innerHTML = '';
+        document.querySelector('h2').innerHTML = 'uploading...';
         var userId = gMSetObj.userId;
         var path = track[activePathName].coords;
         //console.log(path);
@@ -140,24 +162,25 @@ var app = {
     //dataType: 'json',
     data: {'path': pathString,
           'pathID':activePathName,
-           'pathColor': '#FF0000',
+          'pathColor':'#FF0000',
           'userID':userId},
     success: function(data) {
-      alert("Data Saved: " + data);
+      //alert("Data Save: " + data);
+      document.querySelector('h2').innerHTML = 'Upload Successfull';
+        
+        clearInterval(uploadInt);
+        var uploadInt = setTimeout(
+              function() 
+              {
+                document.querySelector('h1').innerHTML = 'G(e)oMap';
+                document.querySelector('h2').innerHTML = '';
+                app.deleteTrack();
+              }, 2000);
+ 
     }
   });
 
 
-//        $.ajax({
-//            data: dataObjString
-//            , type: "post"
-//            , dataType : 'json'
-//            , processData: false //jQuery issue
-//            , url: "http://www.ff-stlorenz.at/geomap/insert.php"
-//            , success: function (data) {
-//                alert("Data Save: " + data);
-//            }
-//        });
     }
     , alertBox: function () {
         var MessageDialogController = (function () {
@@ -229,8 +252,11 @@ var app = {
         }, 'OK,Cancel', 'Title')
     }
     , getCurrPosition: function () { //GET GPS
-
+        console.log('retrieve geo loaction');
+        gpsBusy = true;
         navigator.geolocation.getCurrentPosition(function (position) {
+           
+            console.log('got location');
             //alert('success!');
                 var location = [position.coords.latitude, position.coords.longitude];
 
@@ -243,16 +269,19 @@ var app = {
                 });
 
 
-                document.querySelector('h1').innerHTML = track[activePathName].coords.length + ' Wegpunkte gesetzt';
+                document.querySelector('h2').innerHTML = track[activePathName].coords.length + ' Wegpunkte gesetzt';
                 console.log(track);
+                gpsBusy = false;
+            
             }
             , function (error) {
                 // error getting GPS coordinates
                 alert('code: ' + error.code + ' with message: ' + error.message + '\n');
+                gpsBusy = false;
             }, {
                 enableHighAccuracy: true
                 , maximumAge: 3000
-                , timeout: 100000
+                , timeout: 3600000
             });
         
 //        var onSuccess = function () {
@@ -317,8 +346,7 @@ function toggle_sidebar() {
         //console.log(gMSetString);
         localStorage.setItem('geoMapSettings', gMSetString);
         sidebar.style.left = "-100%";
+        if(appRunning) app.setLocationTimer();
     }
 }
-
-
 
