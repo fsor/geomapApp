@@ -14,31 +14,58 @@
 
 <body onload="app.initialize()">
        <script src="js/jquery-1.4.4.js"></script>
+       <script src="js/functions.js"></script>
  <script>
     </script>
     <div class="app">
-        <h1>G(e)oMap</h1>
-        <h2></h2>
-        <div class="trackOptsFinished hidden">
-            <button id="uploadTrack">Upload</button>
-            <button id="deleteTrack">Delete</button>
-        </div>
-        
-        <div class="trackOptsStart">
-           <input type="text" maxlength="30" placeholder="Trackname" size="30"><br/>
-            <button id="startTracking">Start tracking!</button>
-        </div>
-        <div class="trackOptsRunning hidden">
-            <button id="pauseTracking">Pause</button>
-            <button id="resumeTracking" class="hidden">Continue</button>
-            <button id="stopTracking">Stop tracking</button>
-        </div>
+<!--       <img class="toggle" id="toggle" src="img/icon-mobile.png" onclick="toggle_sidebar()" style="position: fixed; z-index:10; right: 10px; top: 10px" />-->
+        <a href="#menu-toggle" id="menu-toggle"><div class="mobileMenu" id="mobileMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div></a>   
+        <div class="appInner">  
+            <h1>G(e)oMap</h1>
+            <h2></h2>
+            <div class="trackOptsFinished hidden">
+                <button id="uploadTrack">Upload</button>
+                <button id="deleteTrack">Delete</button>
+            </div>
+
+            <div class="trackOptsStart">
+               <input type="text" maxlength="30" placeholder="Trackname" size="30"><br/>
+                <button id="startTracking">Start tracking!</button>
+            </div>
+            <div class="trackOptsRunning hidden">
+                <button id="pauseTracking">Pause</button>
+                <button id="resumeTracking" class="hidden">Continue</button>
+                <button id="stopTracking">Stop tracking</button>
+            </div>
+        </div>  
     </div>
-    
-    <img class="toggle" id="toggle" src="img/icon-mobile.png" onclick="toggle_sidebar()" style="position: fixed; z-index:10; right: 10px; top: 10px" />
-        <div id="sidebar" style="position: fixed; display: inline-block; top: 0px; height: 100%; width: 100%; left: -100%; background-color: #222; transition: all 0.5s ease-in-out;"><div class="innerSidebar">
-            <input type="text" maxlength="30" placeholder="User-ID" size="30"/><br/>
-            Set Trackingpoint every <input id="trackerInterval" type="number" maxlength="2" size="2"/> Minutes. <br/>
+
+        <div id="sidebar" style=""><div class="innerSidebar">
+           		  <div class="loggedin_form">
+           		  <span id="userInfo"></span><br/>
+                  <input id="trackerInterval" type="range" min="1" max="15"/> <br/>
+                  Set Trackingpoint every <span id="trackInt"></span> <span class="minutes">Minutes.</span><br/>
+           		  </div>
+		
+        <div class="login_form">
+                <h3>Login</h3>
+                <form method="POST">
+                <label>Username</label>
+                <input type="text" name="username" id="username" placeholder="your username" /><br />
+                <label>Password</label>
+                <input type="password" name="pasword" id="password" placeholder="your password" /><br />
+                <input type="submit" id="submit_login" name="submit" class="button loginbtn" value="Login" />
+                <span class="login_loading"></span>
+                <span class="errormess"></span>
+                </form>
+            </div>
+           <br/><br/>
+
             </div>
         </div>
         <script type="text/javascript">

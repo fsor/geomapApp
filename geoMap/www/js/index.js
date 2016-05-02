@@ -8,18 +8,50 @@ small alert message
        
 var track = {
         //'Path1': {'coords':[],pathColor:''}
-}, trackInterval, activePathName, trackIntVal, gMSetObj, gpsBusy, appRunning;
-
+}, trackInterval, activePathName, trackIntVal, gMSetObj, gpsBusy, appRunning, data, sidebar = $('#sidebar');
 
 var app = {
-    initialize: function () {
-      
-        //this.bindEvents();
-        setTimeout(function(){
-            app.onDeviceReady();
-            gpsBusy = false;
+    initialize: function (userData) {
+            function checkLogStatus(userData){
+            if(!userData){
+                data = sessionStorage.getItem('geomap_user');
+            }else{
+                data = userData;
+            }
+
+        if(data){
+           console.log('logged in as user: '+data);
+            $('#userInfo').html('Sie sind eingelogged als: '+data+' <span id="logout">abmelden</span>');
+            $('.login_form').hide();
+            userId = data;
+             $('#logout').unbind().click(function(){
+                 sessionStorage.clear();
+                  $('.login_form').show();
+                  $('.loggedin_form').hide();
+                  data = '';
+             });
             
-        }, 1000);
+                    //this.bindEvents();
+            sidebar.hide();
+            $(".mobileMenu").removeClass("closed");
+        }else{
+             $('.login_form').show();
+             $('.loggedin_form').hide();
+            sidebar.show();
+            $(".mobileMenu").addClass("closed");
+        }
+                
+                
+            setTimeout(function(){
+                app.onDeviceReady();
+                gpsBusy = false;
+
+            }, 1000);         
+        
+    }
+    checkLogStatus(userData);
+        
+        
     }
     , bindEvents: function () {
         //document.addEventListener('deviceready', this.onDeviceReady, false);
@@ -69,7 +101,7 @@ var app = {
 
 
 
-        if (document.querySelector('.trackOptsStart input[type="text"]').value && gMSetObj.trackInterval && gMSetObj.userId) {
+        if (document.querySelector('.trackOptsStart input[type="text"]').value && gMSetObj.trackInterval && data) {
             document.querySelector('h1').innerHTML = '';
             document.querySelector('h2').innerHTML = 'Searching for GPS...';
             document.querySelector('.trackOptsRunning').classList.remove('hidden');
@@ -98,8 +130,22 @@ var app = {
             document.querySelector('#pauseTracking').addEventListener('click', app.pauseTracking);
 
         } else {
+            //console.log('text: '+$('.trackOptsStart input[type="text"]').val()+' interval: '+gMSetObj.trackInterval+' data: '+data);
             document.querySelector('h1').innerHTML = '';
-            document.querySelector('h2').innerHTML = 'Please enter all options!';
+            //document.querySelector('h2').innerHTML = 'Please enter all options!';
+            
+            if(document.querySelector('.trackOptsStart input[type="text"]').value == '') {
+                document.querySelector('h2').innerHTML = 'Please enter Pathname';
+
+            }else if(document.querySelector('#trackerInterval').value == ''){
+                document.querySelector('h2').innerHTML = 'Please enter Tracking Interval';
+            }
+            else{
+                document.querySelector('h2').innerHTML = 'Please login';
+                setTimeout(function(){
+                    toggle_sidebar();
+                }, 1000);  
+            }
         }
 
     }
@@ -145,7 +191,7 @@ var app = {
     , uploadTrack: function () {
         document.querySelector('h1').innerHTML = '';
         document.querySelector('h2').innerHTML = 'uploading...';
-        var userId = gMSetObj.userId;
+        var userId = data;
         var path = track[activePathName].coords;
         //console.log(path);
         var pathString = JSON.stringify(path);
@@ -267,9 +313,12 @@ var app = {
                     lat: latPos*1
                     , lng: lngPos*1
                 });
-
-
+            
+            if(track[activePathName].coords.length == 1){
+                document.querySelector('h2').innerHTML = track[activePathName].coords.length + ' Wegpunkt gesetzt';
+            }else{
                 document.querySelector('h2').innerHTML = track[activePathName].coords.length + ' Wegpunkte gesetzt';
+            }
                 console.log(track);
                 gpsBusy = false;
             
@@ -321,32 +370,64 @@ var app = {
     }
 };
 
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        toggle_sidebar();
+        $(".mobileMenu").toggleClass("closed");
+    });
+
 
 function toggle_sidebar() {
-
-    var sidebar = document.getElementById("sidebar");
     //console.log(sidebar.style.left);
-    if (sidebar.style.left == "-100%") {
-        sidebar.style.left = "0px";
-
-        if (localStorage.getItem('geoMapSettings')) {
-            var gMSetStorage = localStorage.getItem('geoMapSettings'); // fill input from local storage
-            gMSetObj = jQuery.parseJSON(gMSetStorage);
-            document.querySelector('#sidebar input[type="number"]').value = gMSetObj.trackInterval;
-            document.querySelector('#sidebar input[type="text"]').value = gMSetObj.userId;
-        }
-
-    } else {
-
+    if (sidebar.is(":visible")) {
+        sidebar.hide();
         var gMSettings = {
-            'trackInterval': document.querySelector('#sidebar input[type="number"]').value
+            'trackInterval': document.querySelector('#sidebar input[type="range"]').value
             , 'userId': document.querySelector('#sidebar input[type="text"]').value
         };
         var gMSetString = JSON.stringify(gMSettings);
         //console.log(gMSetString);
         localStorage.setItem('geoMapSettings', gMSetString);
-        sidebar.style.left = "-100%";
+        sidebar.hide();
         if(appRunning) app.setLocationTimer();
+
+    } else {
+        
+        sidebar.show();
+
+        if (localStorage.getItem('geoMapSettings')) {
+            var gMSetStorage = localStorage.getItem('geoMapSettings'); // fill input from local storage
+            gMSetObj = jQuery.parseJSON(gMSetStorage);
+            document.querySelector('#sidebar input[type="range"]').value = gMSetObj.trackInterval;
+            $('#trackInt').html(gMSetObj.trackInterval);
+            
+                if(gMSetObj.trackInterval == 1){
+                     $('.minutes').html('Minute.');
+                 }else{
+                     $('.minutes').html('Minutes.');
+                 }
+            $("#sidebar input[type='range']").bind("input change", function() { 
+                val = this.value;
+                updateTextInput(val);
+             });
+            
+            
+             function updateTextInput(val) {
+                 //console.log(val);
+                 $('#trackInt').html(val);
+                 if(val == 1){
+                     $('.minutes').html('Minute.');
+                 }else{
+                     $('.minutes').html('Minutes.');
+                 }
+            }
+            
+            
+            //document.querySelector('#sidebar input[type="text"]').value = gMSetObj.userId;
+        }
+
+
+
     }
 }
 
