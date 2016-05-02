@@ -12,9 +12,10 @@ var track = {
 
 var app = {
     initialize: function (userData) {
+         
             function checkLogStatus(userData){
             if(!userData){
-                data = sessionStorage.getItem('geomap_user');
+                data = localStorage.getItem('geomap_user');
             }else{
                 data = userData;
             }
@@ -40,22 +41,24 @@ var app = {
             sidebar.show();
             $(".mobileMenu").addClass("closed");
         }
-                
+              //app.bindEvents(); 
+                document.addEventListener('deviceready', app.bindEvents, false);
                 
             setTimeout(function(){
-                app.onDeviceReady();
+                //app.onDeviceReady();
                 gpsBusy = false;
 
             }, 1000);         
         
     }
+        
     checkLogStatus(userData);
         
         
     }
     , bindEvents: function () {
-        //document.addEventListener('deviceready', this.onDeviceReady, false);
-    
+        alert('bind events');
+        app.onDeviceReady();
     }
     , setLocationTimer: function () {
         //console.log('busy? - '+gpsBusy);
@@ -76,7 +79,8 @@ var app = {
             },trackingTimer);
     }
     , onDeviceReady: function () {
-        
+        alert('device ready');  
+        alert(navigator.camera);   
         app.receivedEvent('deviceready');
         app.getLocalStorage();
     }

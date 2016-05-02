@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="at.fsor.geoMap" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <preference name="loglevel" value="DEBUG" />
+    <feature name="Camera">
+        <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
+    </feature>
+    <feature name="File">
+        <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="Geolocation">
+        <param name="android-package" value="org.apache.cordova.geolocation.Geolocation" />
+    </feature>
+    <feature name="http://api.phonegap.com/1.0/camera"/>
+    <plugin name="Camera" value="org.apache.cordova.camera.CameraLauncher" />
+    <icon density="ldpi" src="res/icon/android/drawable-ldpi-icon.png" />
+    <icon density="mdpi" src="res/icon/android/drawable-mdpi-icon.png" />
+    <icon density="hdpi" src="res/icon/android/screen-hdpi-portrait.png" />
+    <icon density="xhdpi" src="res/icon/android/drawable-xhdpi-icon.png" />
+    <icon density="xxhdpi" src="res/icon/android/drawable-xxhdpi-icon.png" />
+    <icon density="xxxhdpi" src="res/icon/android/drawable-xxxhdpi-icon.png" />
+    <splash density="port-ldpi" src="res/screen/android/screen-ldpi-portrait.png" />
+    <splash density="port-mdpi" src="res/screen/android/screen-mdpi-portrait.png" />
+    <splash density="port-hdpi" src="res/screen/android/screen-hdpi-portrait.png" />
+    <splash density="port-xhdpi" src="res/screen/android/screen-xhdpi-portrait.png" />
+    <allow-intent href="market:*" />
+    <name>G(e)oMap</name>
+    <description>GPS Position Tracking App</description>
+    <author email="florian.soriat@gmail.com" href="#">Florian Soriat</author>
+    <content src="index.html" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="android-minSdkVersion" value="14" />
+    <preference name="SplashScreenDelay" value="5000" />
+    <preference name="SplashScreen" value="splash" />
+    <preference name="CameraUsesGeolocation" value="false" />
+    <preference name="permissions" value="none" />
+    <preference name="orientation" value="portrait" />
+    <gap:splash src="res/screen/android/screen-mdpi-portrait.png" />
+    <gap:plugin name="org.transistorsoft.cordova.background-geolocation" />
+    <gap:plugin name="cordova-plugin-camera" />
+    <plugin name="Camera" value="org.apache.cordova.CameraLauncher" />
+    <icon src="res/icon/android/drawable-xhdpi-icon.png" />
+    <splash src="res/screen/android/screen-mdpi-portrait.png" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+</widget>

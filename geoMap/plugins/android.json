@@ -7,10 +7,13 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-geolocation": {
+        "cordova-plugin-camera": {
             "PACKAGE_NAME": "at.fsor.geoMap"
         },
         "cordova-plugin-file": {
+            "PACKAGE_NAME": "at.fsor.geoMap"
+        },
+        "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "at.fsor.geoMap"
         }
     },

@@ -24,14 +24,19 @@
           <span></span>
           <span></span>
           <span></span>
-        </div></a>   
+        </div></a>  
+        <div id="takeImg" class="takeImg">
+            Photo
+        </div> 
         <div class="appInner">  
             <h1>G(e)oMap</h1>
             <h2></h2>
+            <img style="width:20px;height:20px;" id="myImage"/>
             <div class="trackOptsFinished hidden">
                 <button id="uploadTrack">Upload</button>
                 <button id="deleteTrack">Delete</button>
             </div>
+
 
             <div class="trackOptsStart">
                <input type="text" maxlength="30" placeholder="Trackname" size="30"><br/>
@@ -59,9 +64,10 @@
                 <input type="text" name="username" id="username" placeholder="your username" /><br />
                 <label>Password</label>
                 <input type="password" name="pasword" id="password" placeholder="your password" /><br />
-                <input type="submit" id="submit_login" name="submit" class="button loginbtn" value="Login" />
-                <span class="login_loading"></span>
+                <input type="submit" id="submit_login" name="submit" class="button loginbtn" value="Login" /><br/>
                 <span class="errormess"></span>
+                <span class="login_loading"></span>
+                
                 </form>
             </div>
            <br/><br/>
@@ -70,11 +76,11 @@
         </div>
         <script type="text/javascript">
         $(document).ready(function(){
-            app.initialize();
-           
+            app.initialize(); 
         });
+
     </script>
-<!--  <script type="text/javascript"  src="cordova.js"></script>-->
+  <script type="text/javascript"  src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 
 </body>
