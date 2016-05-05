@@ -22,7 +22,7 @@ var app = {
 
         if(data){
            console.log('logged in as user: '+data);
-            $('#userInfo').html('Sie sind eingelogged als: '+data+' <span id="logout">abmelden</span>');
+            $('#userInfo').html('You are logged in as user: '+data+' <span id="logout">logout</span>');
             $('.login_form').hide();
             userId = data;
              $('#logout').unbind().click(function(){
@@ -41,7 +41,8 @@ var app = {
             sidebar.show();
             $(".mobileMenu").addClass("closed");
         }
-              app.bindEvents();  
+              //app.bindEvents(); 
+                document.addEventListener('deviceready', app.bindEvents, false);
                 
             setTimeout(function(){
                 //app.onDeviceReady();
@@ -56,10 +57,7 @@ var app = {
         
     }
     , bindEvents: function () {
-        alert('bind events');
-        alert(navigator.camera);  
-        document.addEventListener('deviceready', app.onDeviceReady, false);
-    
+        app.onDeviceReady();
     }
     , setLocationTimer: function () {
         //console.log('busy? - '+gpsBusy);
@@ -80,8 +78,8 @@ var app = {
             },trackingTimer);
     }
     , onDeviceReady: function () {
-        alert('device ready');  
-        alert(navigator.camera);   
+        //alert('device ready');  
+        //alert('camera: '+navigator.camera);   
         app.receivedEvent('deviceready');
         app.getLocalStorage();
     }
@@ -92,6 +90,7 @@ var app = {
         } else {
             toggle_sidebar();
         }
+        $('#takeImg').hide();
 
     }
 
@@ -177,6 +176,7 @@ var app = {
         document.querySelector('h2').innerHTML = '';
         document.querySelector('.trackOptsStart').classList.remove('hidden');
         document.querySelector('.trackOptsFinished').className += ' hidden';
+        $('#takeImg').hide();
         app.receivedEvent('deviceready');
     }
     , trackPaused: function () {
@@ -300,10 +300,17 @@ var app = {
                 return false;
             }
 
-        }, 'OK,Cancel', 'Title')
+        }, 'OK,Cancel', 'Are you sure?')
     }
     , getCurrPosition: function () { //GET GPS
         console.log('retrieve geo loaction');
+        var dt = new Date();
+        var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+        var rightNow = new Date();
+        var res = rightNow.toISOString().slice(0,10).replace(/-/g,"");
+        var dateTimeNow = res +'-'+ time;
+        console.log(dateTimeNow);
+        
         gpsBusy = true;
         navigator.geolocation.getCurrentPosition(function (position) {
            
@@ -317,13 +324,20 @@ var app = {
                 track[activePathName].coords.push({
                     lat: latPos*1
                     , lng: lngPos*1
+                    , time: dateTimeNow
                 });
             
             if(track[activePathName].coords.length == 1){
-                document.querySelector('h2').innerHTML = track[activePathName].coords.length + ' Wegpunkt gesetzt';
+                document.querySelector('h2').innerHTML = track[activePathName].coords.length + ' Trackingpoint set';
+                $('#takeImg').show(); 
+            }else if (track[activePathName].coords.length > 1){
+                document.querySelector('h2').innerHTML = track[activePathName].coords.length + ' Trackingpoints set';
+                $('#takeImg').show(); 
             }else{
-                document.querySelector('h2').innerHTML = track[activePathName].coords.length + ' Wegpunkte gesetzt';
+               $('#takeImg').hide(); 
             }
+            
+
                 console.log(track);
                 gpsBusy = false;
             
@@ -337,31 +351,6 @@ var app = {
                 , maximumAge: 3000
                 , timeout: 3600000
             });
-        
-//        var onSuccess = function () {
-//                        alert('success!');
-//                var location = [position.coords.latitude, position.coords.longitude];
-//
-//                latPos = parseFloat(position.coords.latitude).toFixed(7);
-//                lngPos = parseFloat(position.coords.longitude).toFixed(7);
-//
-//                track[activePathName].coords.push({
-//                    lat: latPos*1
-//                    , lng: lngPos*1
-//                });
-//
-//
-//                document.querySelector('h1').innerHTML = track[activePathName].coords.length + ' Wegpunkte gesetzt';
-//                console.log(track);
-//        }
-//        
-//        var onError = function () {
-//            alert('code: ' + error.code + ' with message: ' + error.message + '\n');
-//        }
-//        
-//        
-//        var options = {maximumAge: 0, timeout: 10000, enableHighAccuracy:true};
-//        navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
 
     },
 

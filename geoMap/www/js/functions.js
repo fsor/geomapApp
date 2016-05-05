@@ -46,12 +46,81 @@ $(function() {
     return false;
 	});
     $('#takeImg').click(function(e) {
-        alert('photo');
-        alert(navigator.camera);
-        
-
-        
-
+        //alert(navigator.camera);
+        takeTheImage();
     });
+    function takeTheImage(){
+//        console.log(track[activePathName].coords.length);
+//        console.log(activePathName);
+//        var curPoint = (track[activePathName].coords.length*1)-1;
+//        track[activePathName].coords[curPoint].img = '3333';
+//        console.log(track[activePathName].coords[curPoint]);
+//        console.log(track[activePathName].coords[curPoint]);
+//        console.log(track[activePathName]);
+        
+
+ 
+        function getImage() {
+            // Retrieve image file location from specified source
+            navigator.camera.getPicture(uploadPhoto, function(message) {
+			alert('get picture failed');
+		},{
+            quality: 60,
+            targetWidth: 500,
+            targetHeight: 500,
+            saveToPhotoAlbum: false, 
+            //allowEdit : true, 
+            encodingType: Camera.EncodingType.JPEG, 
+            destinationType: navigator.camera.DestinationType.FILE_URI,
+            sourceType: navigator.camera.PictureSourceType.CAMERA,
+            correctOrientation: true
+		}
+            );
+ 
+        }
+ 
+        function uploadPhoto(imageURI) {
+            var options = new FileUploadOptions();
+            options.fileKey="file";
+            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+            options.mimeType="image/jpeg";
+ 
+            var params = new Object();
+            params.value1 = "test";
+            params.value2 = "param";
+ 
+            options.params = params;
+            options.chunkedMode = false;
+ 
+            var ft = new FileTransfer();
+            ft.upload(imageURI, "http://www.ff-stlorenz.at/geomap/upload/upload.php", win, fail, options);
+        }
+ 
+        function win(r) {
+
+            var lastLine = r.response.substr(r.response.lastIndexOf("\n")+1);
+            console.log(lastLine);
+            
+            var curPoint = (track[activePathName].coords.length*1)-1;
+            track[activePathName].coords[curPoint].img = lastLine;
+            
+
+            //alert(r.response);
+        }
+ 
+        function fail(error) {
+            alert("An error has occurred: Code = " = error.code);
+        }
+        
+        
+        getImage();
+        
+        
+        
+        
+        
+        
+  
+    }
 });		
 

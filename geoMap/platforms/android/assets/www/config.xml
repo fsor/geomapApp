@@ -14,15 +14,18 @@
   <feature name="http://api.phonegap.com/1.0/device" />
   <feature name="http://api.phonegap.com/1.0/geolocation"/>
   <feature name="http://api.phonegap.com/1.0/camera"/>
+  <feature name="http://api.phonegap.com/1.0/file"/>
   <feature name="Geolocation">
-    <param name="android-package" value="org.apache.cordova.geolocation.GeoBroker" />
+  <param name="android-package" value="org.apache.cordova.geolocation.GeoBroker" />
   </feature>
   <feature name="Camera"> 
-    <param name="android-package" value="org.apache.cordova.CameraLauncher"/> 
+  <param name="android-package" value="org.apache.cordova.camera.CameraLauncher"/> 
   </feature>
+  <!--
   <gap:splash src="res/screen/android/screen-mdpi-portrait.png" />
   <gap:plugin name="org.transistorsoft.cordova.background-geolocation" />
-  <gap:plugin name="org.apache.cordova.camera" />
+  <gap:plugin name="cordova-plugin-camera" />
+  -->
   <plugin spec="https://github.com/apache/cordova-plugin-file.git#4.1.0" />
   <plugin name="cordova-plugin-battery-status" source="npm"/>
   <plugin name="cordova-plugin-camera" source="npm"/>

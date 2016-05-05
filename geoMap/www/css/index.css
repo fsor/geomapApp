@@ -274,21 +274,23 @@ body {
     position: absolute;
     width: 100%;
     text-align: center;
-    bottom: 20px;
+    bottom: 0px;
+}
+
+.takeImg svg{
+    display: inline-block;
+    height: 50px;
 }
 
 
+.takeImg svg, .takeImg svg g, .takeImg svg path{
+    fill: #546F25!important;
+}
 
-
-
-
-
-
-
-
-
-
-
+.takeImg svg:hover, .takeImg:hover svg g, .takeImg:hover svg path{
+    fill: #7B3B01!important;
+}
+    
 
 
 input[type=range] {
