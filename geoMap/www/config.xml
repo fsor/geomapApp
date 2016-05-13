@@ -5,12 +5,16 @@
   <content src="index.html"/>
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="orientation" value="portrait" />
-  <preference name="android-minSdkVersion" value="14"/>
+  <preference name="android-minSdkVersion" value="7"/>
   <preference name="SplashScreenDelay" value="5000" />
   <preference name="SplashScreen" value="splash" />
   <preference name="CameraUsesGeolocation" value="false" />
   <preference name="permissions" value="none"/>
+  <preference name="KeepRunning" value="false" />
+  <preference name="exit-on-suspend" value="false" /> 
   <preference name="orientation" value="portrait" />
+  <preference name="AndroidLaunchMode" value="singleTask"/>
+  <preference name="EnableLocation" value="true" />
   <feature name="http://api.phonegap.com/1.0/device" />
   <feature name="http://api.phonegap.com/1.0/geolocation"/>
   <feature name="http://api.phonegap.com/1.0/camera"/>
@@ -27,6 +31,7 @@
   <gap:plugin name="cordova-plugin-camera" />
   -->
   <plugin spec="https://github.com/apache/cordova-plugin-file.git#4.1.0" />
+  <plugin name="cordova-plugin-background-geolocation" source="npm" />
   <plugin name="cordova-plugin-battery-status" source="npm"/>
   <plugin name="cordova-plugin-camera" source="npm"/>
   <plugin name="cordova-plugin-media-capture" source="npm"/>

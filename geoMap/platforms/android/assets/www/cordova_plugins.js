@@ -190,6 +190,27 @@ module.exports = [
         "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
         "id": "cordova-plugin-geolocation.PositionError",
         "runs": true
+    },
+    {
+        "file": "plugins/cordova-plugin-dialogs/www/notification.js",
+        "id": "cordova-plugin-dialogs.notification",
+        "merges": [
+            "navigator.notification"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-dialogs/www/android/notification.js",
+        "id": "cordova-plugin-dialogs.notification_android",
+        "merges": [
+            "navigator.notification"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-background-geolocation/www/BackgroundGeoLocation.js",
+        "id": "cordova-plugin-background-geolocation.BackgroundGeoLocation",
+        "clobbers": [
+            "plugins.backgroundGeoLocation"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -198,7 +219,9 @@ module.exports.metadata =
     "cordova-plugin-compat": "1.0.0",
     "cordova-plugin-camera": "2.2.0",
     "cordova-plugin-file": "4.2.0",
-    "cordova-plugin-geolocation": "2.2.0"
+    "cordova-plugin-geolocation": "2.2.0",
+    "cordova-plugin-dialogs": "1.2.1",
+    "cordova-plugin-background-geolocation": "1.0.6"
 };
 // BOTTOM OF METADATA
 });

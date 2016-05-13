@@ -5,7 +5,7 @@ small alert message
 */
 
     
-       
+
 var track = {
         //'Path1': {'coords':[],pathColor:''}
 }, trackInterval, activePathName, trackIntVal, gMSetObj, gpsBusy, appRunning, data, sidebar = $('#sidebar');
@@ -78,8 +78,9 @@ var app = {
             },trackingTimer);
     }
     , onDeviceReady: function () {
-        //alert('device ready');  
-        //alert('camera: '+navigator.camera);   
+        console.log('device ready');  
+        //alert('camera: '+navigator.camera);  
+        
         app.receivedEvent('deviceready');
         app.getLocalStorage();
     }
